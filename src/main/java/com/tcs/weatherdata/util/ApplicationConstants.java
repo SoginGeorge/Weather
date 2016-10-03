@@ -8,4 +8,6 @@ public class ApplicationConstants {
 	public static final String ALTITUDE = "altitude";
 	public static final String LATITUDE = "latitude";
 	public static final String LONGITUDE = "longitude";
+	public static final String MAX_TEMPRETURE = "maxtempreture";
+	public static final String MIN_TEMPRETURE = "mintempreture";
 }

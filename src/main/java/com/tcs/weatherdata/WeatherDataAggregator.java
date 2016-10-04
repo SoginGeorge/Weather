@@ -29,15 +29,15 @@ public class WeatherDataAggregator {
 
 		for(String baseLocation : baseLocations)
 		{   
-
+            Double tempreture = WeatherDataCalculator.calculateTempreture(baseLocation, properties);
 			WeatherData weatherData = new WeatherData();
 
-			weatherData.setStrStation(properties.getProperty(baseLocation+"."+ApplicationConstants.IATA));
+			weatherData.setStrStation(properties.getProperty(baseLocation+ApplicationConstants.DOT+ApplicationConstants.IATA));
 			weatherData.setDaLocalTime(new Date());
-			weatherData.setStrLocation(processLocation(baseLocation,properties));
-			weatherData.setdTempreture(WeatherDataCalculator.calculateTempreture(baseLocation,properties));
-			weatherData.setdPressure(WeatherDataCalculator.calculatePressure(baseLocation,properties));
-			weatherData.setdHumidity(WeatherDataCalculator.calculateHumidity(baseLocation,properties));
+			weatherData.setStrLocation(WeatherDataFormatter.processLocation(baseLocation,properties));
+			weatherData.setdTempreture(tempreture);
+			weatherData.setdPressure(WeatherDataCalculator.calculatePressure(baseLocation,properties,tempreture));
+			weatherData.setdHumidity(WeatherDataCalculator.calculateHumidity(baseLocation,properties,tempreture));
 			weatherData.setEnWeatherCondition(WeatherDataCalculator.deriveWeatherCondition(baseLocation,properties));
 			lisGeneratedData.add(weatherData);
 
@@ -46,25 +46,11 @@ public class WeatherDataAggregator {
 		return lisGeneratedData;
 	}
 
-
-	private static String processLocation(String baseLocation, Properties properties) {
-
-		String strLocation =properties.getProperty(baseLocation+"."+ApplicationConstants.LATITUDE).concat(",");
-		strLocation =strLocation.concat(properties.getProperty(ApplicationConstants.LONGITUDE)).concat(",");
-		strLocation =strLocation.concat(properties.getProperty(baseLocation+"."+ApplicationConstants.ALTITUDE));
-
-		return strLocation;
-	}
-
-
-
-
-
 	public static Set<String> getBaseStations(Properties properties) {
 
 		String baseLocation = properties.getProperty(ApplicationConstants.BASE_LOCATIONS);
 
-		String[] baseLocations = properties.getProperty(ApplicationConstants.BASE_LOCATIONS).split(",");
+		String[] baseLocations = properties.getProperty(ApplicationConstants.BASE_LOCATIONS).split(ApplicationConstants.SEPARATOR);
 		Set<String> uniqueBaseLocations = new LinkedHashSet<String>();
 		for(int i=0;i<baseLocations.length;i++){
 			uniqueBaseLocations.add(baseLocations[i]);
@@ -84,7 +70,7 @@ public class WeatherDataAggregator {
 
 			fileWriter.write(WeatherDataFormatter.getDataInFormat(weatherData)+ newLine);
 
-        }
+		}
 		fileWriter.close();
 
 	}

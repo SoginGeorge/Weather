@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
+import com.tcs.weatherdata.Exception.WeatherDataException;
 import com.tcs.weatherdata.calculator.WeatherDataCalculator;
 import com.tcs.weatherdata.model.WeatherData;
 import com.tcs.weatherdata.util.ApplicationConstants;
@@ -59,9 +60,10 @@ public class WeatherDataAggregator {
 	}
 
 
-	public static void writeData() throws IOException {
+	public static void writeData() {
 
 		List<WeatherData> lisGeneratedData = generateData();
+		try{
 		FileWriter fileWriter = new FileWriter("WeatherData.txt");
 
 		String newLine = System.getProperty("line.separator");
@@ -72,6 +74,11 @@ public class WeatherDataAggregator {
 
 		}
 		fileWriter.close();
+		}
+		catch(IOException e)
+		{
+			throw new WeatherDataException("IO Exception");
+		}
 
 	}
 

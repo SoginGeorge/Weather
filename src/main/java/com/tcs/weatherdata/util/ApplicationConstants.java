@@ -16,4 +16,5 @@ public class ApplicationConstants {
 	public static final String DEW_POINT = "dewpoint";
 	public static final String SEPARATOR = ",";
 	public static final String PIPE = " | ";
+	public static final Object IO_EXCEPTION = "ioexception";
 }
